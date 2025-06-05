@@ -1,0 +1,11 @@
+reddit:
+  client_id: ""
+  client_secret: ""
+  username: "" 
+  password: ""
+  user_agent: ""
+newsapi:
+  api_key: ""
+openai:
+  api_key: ""
+  model_name: "gpt-4o-mini"

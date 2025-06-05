@@ -1,0 +1,9 @@
+yfinance
+pandas
+praw
+requests
+pyyaml
+matplotlib
+openai
+numpy
+Flask
