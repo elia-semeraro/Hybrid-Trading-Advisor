@@ -35,7 +35,7 @@ full_price_df = price_fetcher.fetch_price_data(ticker, period="3mo").dropna()  #
 full_price_df.index = full_price_df.index.tz_localize(None)
 
 # Filtra le date esattamente nell'intervallo
-price_df = full_price_df.loc[start_date:end_date]
+price_df = full_price_df.loc[start_date:end_date].copy()
 start_date = pd.to_datetime(start_date)
 end_date = pd.to_datetime(end_date)
 
@@ -64,6 +64,7 @@ records = []  # lista per raccogliere righe da salvare in Excel
 position_log = []  # log di aperture/chiusure
 open_position_date = None
 open_position_type = None
+opening_price = None  # prezzo di apertura della posizione
 
 for date, row in price_df.iterrows():
     try:
@@ -112,33 +113,37 @@ for date, row in price_df.iterrows():
         price = row['Close']
 
         # === Tracciamento apertura e chiusura posizioni ===
-        if final_signal in ["Buy", "Weak Buy", "Strong Buy"] and not holding:
+        if final_signal in ["Buy"] and not holding:
             open_position_date = date
             open_position_type = "long"
             position_log.append(f"Apertura posizione long il {date.date()}.")
             holding = True
+            opening_price = price
 
-        elif final_signal in ["Sell", "Weak Sell", "Strong Sell"] and not holding_short:
+        elif final_signal in ["Sell"] and not holding_short:
             open_position_date = date
             open_position_type = "short"
             position_log.append(f"Apertura posizione short il {date.date()}.")
             holding_short = True
+            opening_price = price
 
         # Chiusura long se il segnale è di natura opposta o neutra
-        elif holding and final_signal in ["Hold", "Weak Sell", "Sell", "Strong Sell"]:
+        elif holding and final_signal in ["Hold","Sell"]:
             position_log.append(f"Chiusura posizione long il {date.date()}.")
             open_position_date = None
             open_position_type = None
             holding = False
             position = 0
+            openening_price = None
 
         # Chiusura short se il segnale è di natura opposta o neutra
-        elif holding_short and final_signal in ["Hold", "Weak Buy", "Buy", "Strong Buy"]:
+        elif holding_short and final_signal in ["Hold", "Buy"]:
             position_log.append(f"Chiusura posizione short il {date.date()}.")
             open_position_date = None
             open_position_type = None
             holding_short = False
             short_position = 0
+            opening_price = None
 
 
         # Salva i dati in una lista per CSV
@@ -169,45 +174,65 @@ print("\n=== LOG STRATEGIA: Aperture/Chiusure ===")
 for event in position_log:
     print(event)
 
-# Output finale
-# Calcolo del Total Return basato solo su posizioni chiuse 
+# === Return Calculation ===
 returns = []
-open_price = None
-close_price = None
 open_type = None
+open_date = None
 
 for event in position_log:
     if "Apertura posizione" in event:
-        open_date = pd.to_datetime(event.split("il ")[1].strip())
-        open_price = price_df.loc[open_date, "Close"]
         open_type = "long" if "long" in event else "short"
+        open_date = pd.to_datetime(event.split("il ")[1].strip())
 
-    elif "Chiusura posizione" in event:
+    elif "Chiusura posizione" in event and open_type and open_date:
         close_date = pd.to_datetime(event.split("il ")[1].strip())
+        open_price = price_df.loc[open_date, "Close"]
         close_price = price_df.loc[close_date, "Close"]
 
-        if open_price is not None and close_price is not None:
-            if open_type == "long":
-                ret = (close_price - open_price) / open_price
-            elif open_type == "short":
-                ret = (open_price - close_price) / open_price
-            else:
-                ret = 0
-            returns.append(ret)
-
-        # Reset
-        open_price = None
-        close_price = None
+        if open_type == "long":
+            ret = (close_price - open_price) / open_price
+        else:
+            ret = (open_price - close_price) / open_price
+        returns.append(ret)
         open_type = None
+        open_date = None
 
-# Calcolo return totale sommando i ritorni delle singole posizioni
-if returns:
-    total_return = sum(returns) * 100
-    print(f"\nTotal Return (solo posizioni chiuse): {total_return:.2f}%")
+# === Final Portfolio Evaluation ===
+if end_date not in price_df.index:
+    end_date = price_df.index[price_df.index <= end_date][-1]
+current_price = price_df.loc[end_date, "Close"]
+
+if (holding or holding_short) and not returns:
+    if opening_price is not None:
+        quantity = initial_cash / opening_price
+        if holding:
+            final_cash = quantity * current_price
+        else:
+            final_cash = initial_cash + quantity * (opening_price - current_price)
+        gain_pct = (final_cash - initial_cash) / initial_cash * 100
+        status = "Opened but not closed"
+    else:
+        final_cash = initial_cash
+        gain_pct = 0.0
+        status = "Error: open_price missing"
+
+elif returns:
+    total_return = sum(returns)
+    final_cash = initial_cash * (1 + total_return)
+    gain_pct = total_return * 100
+    status = "Opened and closed"
+
 else:
-    print("\nNessuna posizione chiusa: Total Return non calcolabile.")
+    final_cash = initial_cash
+    gain_pct = 0.0
+    status = "No positions opened"
 
+# === Print Summary ===
+print("\n=== FINAL SUMMARY ===")
+print(f"Status: {status}")
+print(f"Final Portfolio Value: ${final_cash:,.2f}")
+print(f"Total Gain/Loss: {gain_pct:.2f}%")
 
-# === Salva in Excel ===
+# === Save to CSV ===
 output_df = pd.DataFrame(records)
-output_df.to_csv("NVDA_backtest_output.csv", index=False)
+output_df.to_csv("backtest_output.csv", index=False)
