@@ -128,14 +128,14 @@ class HybridStrategy:
         if final_signal == "Hold":
             explanation = "Indicators are not aligned, or momentum is weak: no action recommended."
         elif final_signal == "Buy":
-            if RSI > overbought_threshold and sentiment_score > 60:
+            if RSI > overbought_threshold and sentiment_score > 25:
                 explanation = "Despite overbought condition, strong bullish sentiment suggests a continuation of the uptrend."
             elif RSI < oversold_threshold and sentiment_score > 0:
                 explanation = "Oversold condition and positive sentiment indicate a likely reversal upward: buying opportunity."
             else:
                 explanation = "Moderate bullish sentiment and RSI positioning suggest a possible upward move."
         elif final_signal == "Sell":
-            if RSI < oversold_threshold and sentiment_score < -60:
+            if RSI < oversold_threshold and sentiment_score < -25:
                 explanation = "Despite oversold condition, strong bearish sentiment suggests a continuation of the downtrend."
             elif RSI > overbought_threshold and sentiment_score < 0:
                 explanation = "Overbought condition and negative sentiment indicate a likely reversal downward: selling opportunity."
