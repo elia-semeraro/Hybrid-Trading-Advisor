@@ -146,7 +146,7 @@ Backtesting was constrained by data limits (e.g., NewsAPI free tier).
 ```bash
 python Backtest_1.py
 ```
-4. Wait from 5 to 30 minutes, depending on computational effort required and view the total return of advisor's positions.
+4. Wait 5 to 30 minutes, depending on computational effort required and view the total return of advisor's positions.
 
 ## Future Improvements
 
