@@ -95,7 +95,7 @@ python main.py
 hybrid_trading_advisor/
 │
 ├── main.py                            # Entry point of the application for real-time operation
-├── Backtest_1.py                      # Script for running historical backtests
+├── run_backtest.py                      # Script for running historical backtests
 ├── requirements.txt                   # Python dependencies for the project
 │
 ├── config/                            # Centralized configuration management
@@ -144,7 +144,7 @@ Backtesting was constrained by data limits (e.g., NewsAPI free tier).
 3. Run Backtest_1.py:
 
 ```bash
-python Backtest_1.py
+python run_backtest.py
 ```
 4. Wait 5 to 30 minutes, depending on computational effort required and view the total return of advisor's positions.
 
