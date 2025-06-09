@@ -135,7 +135,18 @@ The strategy was backtested on one month of historical data, with daily signal g
 - Average return: 1.34% over an average two weeks timespan
 - Peak return days: 15.62% and 11.59%
 
-Backtesting was constrained by data limits (e.g., NewsAPI free tier).
+Backtesting was constrained by data limits (e.g., NewsAPI free tier). 
+
+## How to Run a Backtest
+
+1. Ensure you have filled in the `config/backtest_config.py` file with the settings required.
+
+3. Run Backtest_1.py:
+
+```bash
+python Backtest_1.py
+```
+4. Wait from 5 to 30 minutes, depending on computational effort required and view the total return of advisor's positions.
 
 ## Future Improvements
 
