@@ -57,6 +57,8 @@ This project relies on third-party APIs for sentiment data and LLM-based scoring
 reddit:
   client_id: "YOUR_REDDIT_CLIENT_ID"
   client_secret: "YOUR_REDDIT_CLIENT_SECRET"
+  username: "YOUR_REDDIT_USERNAME" 
+  password: "YOUR_REDDIT_PASSWORD"
   user_agent: "YOUR_REDDIT_USER_AGENT"
 
 newsapi:
@@ -64,6 +66,7 @@ newsapi:
 
 openai:
   api_key: "YOUR_OPENAI_API_KEY"
+  model_name: "MODEL_TO_USE"
 ```
 
 #### Follow these steps to get what you need.
