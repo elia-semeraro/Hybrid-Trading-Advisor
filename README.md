@@ -66,6 +66,33 @@ openai:
   api_key: "YOUR_OPENAI_API_KEY"
 ```
 
+Follow these steps to get what you need.
+Reddit API credentials
+1.	Go to https: https://www.reddit.com/prefs/apps.
+2.	Scroll to "Developed Applications".
+3.	Click on “Create App” or “Create Another App”.
+4.	Fill out the form:
+o	Name: (e.g. HybridTradingAdvisor)
+o	App type: Select "script"
+o	Redirect URI: Use http://localhost:8080 (required but not used in scripts).
+o	Description: Optional
+5.	After creation, you'll see:
+o	client_id: displayed under the app name.
+o	client_secret: visible once the app is created.
+•	username: your Reddit account.
+•	password: your Reddit password.
+•	user_agent: any string that identifies your app (recommended format: "YourAppName/Version by YourRedditUsername").
+News API credentials
+1.	Go to https: https://newsapi.org.
+2.	Sign up for a free account.
+3.	Once logged in, navigate to “API” or your Dashboard.
+4.	Your API key will be available there — copy it.
+OPENAI API credentials
+1.	Go to https: https://platform.openai.com/signup and create an account (or login).
+2.	Navigate to https://platform.openai.com/account/api-keys.
+3.	Click "Create new secret key".
+4.	Copy and store the key securely. You will not see it again.
+
 **Do not share your API keys publicly.** These are required to fetch sentiment data and to run LLM-based sentiment classification.
 
 ## How to Use
