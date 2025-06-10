@@ -129,7 +129,7 @@ python main.py
 hybrid_trading_advisor/
 │
 ├── main.py                            # Entry point of the application for real-time operation
-├── run_backtest.py                      # Script for running historical backtests
+├── run_backtest.py                    # Script for running historical backtests
 ├── requirements.txt                   # Python dependencies for the project
 │
 ├── config/                            # Centralized configuration management
