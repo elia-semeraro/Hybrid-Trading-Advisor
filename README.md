@@ -74,16 +74,16 @@ openai:
 2.	Scroll to "Developed Applications".
 3.	Click on “Create App” or “Create Another App”.
 4.	Fill out the form:
-o	Name: (e.g. HybridTradingAdvisor)
-o	App type: Select "script"
-o	Redirect URI: Use http://localhost:8080 (required but not used in scripts).
-o	Description: Optional
+- Name: (e.g. HybridTradingAdvisor)
+- App type: Select "script"
+- Redirect URI: Use http://localhost:8080 (required but not used in scripts).
+- Description: Optional
 5.	After creation, you'll see:
-o	client_id: displayed under the app name.
-o	client_secret: visible once the app is created.
-•	username: your Reddit account.
-•	password: your Reddit password.
-•	user_agent: any string that identifies your app (recommended format: "YourAppName/Version by YourRedditUsername").
+- client_id: displayed under the app name.
+- client_secret: visible once the app is created.
+- username: your Reddit account.
+- password: your Reddit password.
+- user_agent: any string that identifies your app (recommended format: "YourAppName/Version by YourRedditUsername").
 
 #### News API credentials
 1.	Go to https: https://newsapi.org.
