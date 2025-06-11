@@ -72,7 +72,6 @@ openai:
 #### Follow these steps to get what you need.
 
 #### Reddit API credentials
-
 1.	Go to https: https://www.reddit.com/prefs/apps.
 2.	Scroll to "Developed Applications".
 3.	Click on “Create App” or “Create Another App”.
