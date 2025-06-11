@@ -72,8 +72,9 @@ openai:
 #### Follow these steps to get what you need.
 
 #### Reddit API credentials
+
 1.	Go to https: https://www.reddit.com/prefs/apps.
-2.	Scroll to "Developed Applications".
+2.	Scroll to "Developed Applications", (for new accounts click on "Are you a developer? Create an app").
 3.	Click on “Create App” or “Create Another App”.
 4.	Fill out the form:
 - Name: (e.g. HybridTradingAdvisor)
