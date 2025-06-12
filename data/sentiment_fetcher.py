@@ -91,46 +91,6 @@ class SentimentFetcher:
             except Exception as e:
                 print(f"Error fetching from Reddit r/{subreddit_name}: {str(e)}")
         
-        '''
-        # 2. Reddit with multiple methods
-        for subreddit_name in subreddits:
-            try:
-                subreddit = self.reddit.subreddit(subreddit_name)
-                print(f"Searching Reddit r/{subreddit_name} for {ticker}")
-
-                total_added = 0
-
-                # Use different methods to maximize coverage
-                for method in [subreddit.search, subreddit.top, subreddit.new, subreddit.hot]:
-                    if method == subreddit.search:
-                        submissions = method(f"{ticker} OR {ticker_to_company(ticker)}", limit=500, time_filter="all")
-                    else:
-                        submissions = method(limit=300)  # Adjust as needed
-
-                    for submission in submissions:
-                        if submission.created_utc < start_time.timestamp():
-                            continue
-
-                        text = f"{submission.title} {submission.selftext or ''}"
-                        if not re.search(rf"\b{re.escape(ticker)}\b", text, re.IGNORECASE):
-                            continue
-
-                        data.append({
-                            "timestamp": datetime.fromtimestamp(submission.created_utc, tz=timezone.utc),
-                            "text": text.strip(),
-                            "source": f"reddit_{subreddit_name}",
-                            "ticker": ticker
-                        })
-                        total_added += 1
-
-                print(f"Reddit r/{subreddit_name} returned {total_added} items")
-
-            except Exception as e:
-                print(f"Error fetching from r/{subreddit_name}: {e}")
-
-        
-        '''
-        
         # NewsAPI
         try:
             news_query = ticker_to_company(ticker)
