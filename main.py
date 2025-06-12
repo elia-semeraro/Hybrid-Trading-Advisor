@@ -9,14 +9,14 @@ from evaluation.report_generator import GenerateReport
 
 app = Flask(__name__)
 
-# Aggiungiamo una route separata per l'analisi
+
 @app.route('/analyze', methods=['POST'])
 def analyze():
     ticker = request.form['ticker'].strip().upper()
     rsi_mode = request.form.get('rsi_mode', 'standard')
     
     try:
-        # Inizializzazione moduli
+        
         price_fetcher = PriceFetcher()
         sentiment_fetcher = SentimentFetcher()
         sentiment_cleaner = SentimentCleaner()
