@@ -3,29 +3,6 @@ class HybridStrategy:
         pass  # Per ora non inizializziamo nulla, ma puoi aggiungere parametri in futuro
 
     def generate_trading_signal(self, RSI, ADX, PE_ratio, sentiment_score, rsi_mode):
-        """
-        Generates a trading signal based on RSI, ADX, P/E ratio, and sentiment score,
-        with configurable RSI thresholds.
-
-        Args:
-            RSI (float): Relative Strength Index (0-100).
-            ADX (float): Average Directional Index (0-100).
-            PE_ratio (float): Price-to-Earnings ratio (positive).
-            sentiment_score (float): Sentiment score (-100 to +100).
-            rsi_mode (str, optional): RSI sensitivity mode.
-                                   "conservative": RSI thresholds of 20 and 80.
-                                   "standard" (default): RSI thresholds of 30 and 70.
-                                   "aggressive": RSI thresholds of 40 and 60.
-                                   Defaults to "standard".
-
-        Returns:
-            tuple: (final_signal, confidence_level, total_score)
-               - final_signal: "Buy", "Hold", "Sell"
-               - confidence_level: 1 to 5"
-
-        Raises:
-            ValueError: If any input value is invalid.
-        """
 
         # 0. Input Validation
         if not 0 <= RSI <= 100:
@@ -49,7 +26,7 @@ class HybridStrategy:
         elif rsi_mode == "aggressive":
             oversold_threshold = 45
             overbought_threshold = 55
-        else:  # If rsi_mode is invalid, default to standard
+        else:  
             oversold_threshold = 40
             overbought_threshold = 60
 
@@ -85,13 +62,13 @@ class HybridStrategy:
             abs_sentiment_score = abs(sentiment_score)
             abs_technical_score = abs(RSI - 50) * 2
 
-            # Avoid division by zero
+            
             if abs_sentiment_score == 0:
                 total_score = 0
             else:
                 total_score = (0.6 * abs_technical_score + 0.4 * abs_sentiment_score) 
         else:
-            total_score = 0  # Default for "Hold"
+            total_score = 0  
 
         # 5. Apply P/E Ratio as Confidence Multiplier - Only if total_score > 0
         if total_score > 0:
@@ -111,7 +88,7 @@ class HybridStrategy:
 
         # 6. Determine Final Signal and Confidence Level based on Total Score
         if final_signal == "Hold":
-            confidence_level = "100%"   # Default for "Hold"
+            confidence_level = "100%"   
         elif total_score >= 80:
             final_signal = "Buy" if final_signal == "Buy" else "Sell"
             confidence_level = f"{int(total_score)}%"
@@ -120,7 +97,7 @@ class HybridStrategy:
         elif 20 <= total_score < 60:
             final_signal = "Buy" if final_signal == "Buy" else "Sell"
             confidence_level = f"{int(total_score)}%" 
-        else:  # 0 <= total_score < 20
+        else:  
             confidence_level = f"{int(total_score)}%" 
 
 
