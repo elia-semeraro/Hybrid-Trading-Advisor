@@ -32,7 +32,7 @@
       <button type="submit" class="btn-analyze">Analyze</button>
     </form>
 
-    <!-- Loading indicator sempre visibile ma inizialmente vuoto -->
+    
     <div id="loading" class="loading-container">
     </div>
 
@@ -48,7 +48,7 @@
       <p class="error-msg">{{ error }}</p>
     {% endif %}
 
-    <!-- Risultati (rimangono uguali) -->
+    
     {% if sentiment_score and final_signal and confidence %}
       <div class="results-row">
         <div class="result-box">
@@ -90,16 +90,16 @@
       const ticker = document.querySelector('input[name="ticker"]').value;
       const loadingContainer = document.getElementById('loading');
     
-      // Crea e aggiungi il contenuto di caricamento
+      
       loadingContainer.innerHTML = `
         <div class="loading-spinner"></div>
         <p class="loading-text">Analyzing ${ticker || 'the stock'}... (~ 1 minute) </p>
     ` ;
     
-      // Mostra il container
+      
       loadingContainer.classList.add('active');
       
-      // Nascondi i risultati precedenti
+      
       const resultsContainers = document.querySelectorAll('.results-row, .report-box, .error-msg');
       resultsContainers.forEach(container => {
         container.style.display = 'none';
