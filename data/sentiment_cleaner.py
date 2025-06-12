@@ -10,15 +10,7 @@ class SentimentCleaner:
         self.url_pattern = r'http\S+|www\S+|https\S+'
     
     def clean_text(self, text: str) -> str:
-        """
-        Clean a single text string by removing links.
         
-        Args:
-            text (str): Input text to clean.
-        
-        Returns:
-            str: Cleaned text, or empty string if invalid.
-        """
         if not isinstance(text, str) or not text.strip():
             return ""
         
@@ -31,15 +23,7 @@ class SentimentCleaner:
         return text if text else ""
     
     def clean_sentiment_data(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Clean the 'text' column in the sentiment DataFrame.
         
-        Args:
-            df (pd.DataFrame): Input DataFrame with columns ['timestamp', 'text', 'source', 'ticker'].
-        
-        Returns:
-            pd.DataFrame: DataFrame with additional 'cleaned_text' column, rows with empty cleaned_text removed.
-        """
         if df.empty or 'text' not in df.columns:
             print("Warning: Empty DataFrame or missing 'text' column. Returning empty DataFrame.")
             return pd.DataFrame(columns=['timestamp', 'text', 'cleaned_text', 'source', 'ticker'])
