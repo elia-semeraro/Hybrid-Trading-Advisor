@@ -1,13 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="../static/style.css" />
 </head>
 <body>
-    <script>
-        location.href = "./templates";
-    </script>
+  <div class="container">
+
+    <h1 class="title">Hybrid Trading Advisor</h1>
+
+    <form method="POST" action="/analyze" class="form-inline" id="analysis-form">
+      <input 
+        type="text" 
+        name="ticker" 
+        placeholder="Inserisci il simbolo del ticker (es. META, AAPL)" 
+        class="input-ticker" 
+        required
+        value="{{ ticker if ticker else '' }}"
+      />
+
+      <div class="form-group">
+        <label for="rsi_mode" class="form-label">RSI mode:</label>
+        <select name="rsi_mode" class="select-mode">
+          <option value="moderate" {% if rsi_mode == 'moderate' %}selected{% endif %}>Moderate</option>
+          <option value="standard" {% if rsi_mode == 'standard' %}selected{% endif %}>Standard</option>
+          <option value="aggressive" {% if rsi_mode == 'aggressive' %}selected{% endif %}>Aggressive</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-analyze">Analyze</button>
+    </form>
+
+    
+    <div id="loading" class="loading-container">
+    </div>
+
+    <div class="info-box-always">
+      <h3>Useful information</h3>
+      <p>
+        Select your ticker and the RSI mode to analyze the sentiment and technical indicators of the stock. <br>
+        When you're ready, click the "Analyze" button to get the results and wait ~ 1 minute for the analysis to complete.
+      </p>
+    </div>
+
+    {% if error %}
+      <p class="error-msg">{{ error }}</p>
+    {% endif %}
+
+    
+    {% if sentiment_score and final_signal and confidence %}
+      <div class="results-row">
+        <div class="result-box">
+          <h3>Sentiment Score</h3>
+          <div class="result-value">{{ sentiment_score }}</div>
+        </div>
+        <div class="result-box">
+          <h3>Final Signal</h3>
+          <div class="result-value">{{ final_signal }}</div>
+        </div>
+        <div class="result-box">
+          <h3>Confidence</h3>
+          <div class="result-value">{{ confidence }}</div>
+        </div>
+      </div>
+    {% endif %}
+    
+    {% if report %}
+      <div class="report-box">
+        <p>{{ report }}</p>
+      </div>
+    {% endif %}
+  
+    <div class="info-section">
+      <h3>How to interpret the results</h3>
+      <ul class="info-list">
+        <li><strong>Sentiment Score</strong>: it shows the sentiment level on that title. Values range between -100 (Very Negative) and +100 (very positive).</li>
+        <li><strong>Final Signal</strong>: it shows the final advice (es. Buy, Hold, Sell), derived by the hybrid analysis between technical indicators and sentiment level.</li>
+        <li><strong>Confidence</strong>: it shows the confidence of the model on the signal provided, expressed in percentage. Higher scores indicate stronger alignment between technical and sentiment inputs,
+ while lower scores reflect weaker or uncertain conditions.</li>
+        <li><strong>RSI mode</strong>: RSI mode changes the sensibility of the RSI on the signal generation.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <script>
+    document.getElementById('analysis-form').addEventListener('submit', function(e) {
+      const ticker = document.querySelector('input[name="ticker"]').value;
+      const loadingContainer = document.getElementById('loading');
+    
+      
+      loadingContainer.innerHTML = `
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Analyzing ${ticker || 'the stock'}... (~ 1 minute) </p>
+    ` ;
+    
+      
+      loadingContainer.classList.add('active');
+      
+      
+      const resultsContainers = document.querySelectorAll('.results-row, .report-box, .error-msg');
+      resultsContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    });
+  </script>
 </body>
 </html>
