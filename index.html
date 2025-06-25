@@ -1,31 +1,23 @@
 <!DOCTYPE html>
-<html lang="it">
-<head>
-  <meta charset="UTF-8" />
+<html lang="it"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
   <title>Dashboard</title>
-  <link rel="stylesheet" href="../static/style.css" />
+   <link rel="stylesheet" href="./static/style.css">
 </head>
 <body>
   <div class="container">
 
     <h1 class="title">Hybrid Trading Advisor</h1>
 
-    <form method="POST" action="/analyze" class="form-inline" id="analysis-form">
-      <input 
-        type="text" 
-        name="ticker" 
-        placeholder="Inserisci il simbolo del ticker (es. META, AAPL)" 
-        class="input-ticker" 
-        required
-        value="{{ ticker if ticker else '' }}"
-      />
+    <form method="POST" action="http://localhost:5000/analyze" class="form-inline" id="analysis-form">
+      <input type="text" name="ticker" placeholder="Inserisci il simbolo del ticker (es. META, AAPL)" class="input-ticker" required="" value="">
 
       <div class="form-group">
         <label for="rsi_mode" class="form-label">RSI mode:</label>
         <select name="rsi_mode" class="select-mode">
-          <option value="moderate" {% if rsi_mode == 'moderate' %}selected{% endif %}>Moderate</option>
-          <option value="standard" {% if rsi_mode == 'standard' %}selected{% endif %}>Standard</option>
-          <option value="aggressive" {% if rsi_mode == 'aggressive' %}selected{% endif %}>Aggressive</option>
+          <option value="moderate">Moderate</option>
+          <option value="standard" selected="">Standard</option>
+          <option value="aggressive">Aggressive</option>
         </select>
       </div>
 
@@ -44,33 +36,12 @@
       </p>
     </div>
 
-    {% if error %}
-      <p class="error-msg">{{ error }}</p>
-    {% endif %}
+    
 
     
-    {% if sentiment_score and final_signal and confidence %}
-      <div class="results-row">
-        <div class="result-box">
-          <h3>Sentiment Score</h3>
-          <div class="result-value">{{ sentiment_score }}</div>
-        </div>
-        <div class="result-box">
-          <h3>Final Signal</h3>
-          <div class="result-value">{{ final_signal }}</div>
-        </div>
-        <div class="result-box">
-          <h3>Confidence</h3>
-          <div class="result-value">{{ confidence }}</div>
-        </div>
-      </div>
-    {% endif %}
     
-    {% if report %}
-      <div class="report-box">
-        <p>{{ report }}</p>
-      </div>
-    {% endif %}
+    
+    
   
     <div class="info-section">
       <h3>How to interpret the results</h3>
@@ -106,5 +77,5 @@
       });
     });
   </script>
-</body>
-</html>
+
+</body></html>
